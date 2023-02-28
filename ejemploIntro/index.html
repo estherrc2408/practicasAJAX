@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="boton">BOTON</button>
+    <section id="seccion"></section>
+
+    <script>
+        const seccion = document.querySelector('#seccion');
+        const boton = document.querySelector('#boton');
+        const url = 'https://jsonplaceholder.typicode.com/posts';
+        console.log(fetch(url))//fletch('GET,POST,DELETE...',{objeto de opciones})
+        //pasando solo el enlace es por defecto una peticion GET
+        //el console.log devuelve una promesa
+        /*
+        fetch(url)
+            .then((resp)=> resp.ok ? resp.json() : Promise.reject('Esto es un error'))
+            //si ok es true entonces se hace la conversion a obj, si no se envia al error el texto de error
+            .then((resp)=>pintar(resp))
+            .catch((error)=>console.log(error))
+            //.then((resp)=>console.log(resp.json())) el json nos traduce la respuesta a JSON
+        */
+
+        boton.addEventListener('click', (ev) => {
+            pintar()
+        })
+        //EJEMPLO CON ASINCRONA
+        const consulta = async () => {
+            try {
+                const peticion = await fetch(url)
+
+                if (peticion.ok) {
+                    const respuesta = await peticion.json()
+                    return {
+                        ok:true,
+                        respuesta: respuesta,
+                    }
+                    //si el ok de la peticion es true, entonces respuesta es igual a peticion parseada
+                } else {
+                    throw {
+                        ok:false,
+                        msg: 'error en la peticion'
+                    }
+                }
+                console.log(peticion);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+
+        const pintar = async () => {
+
+            const {ok,respuesta} = await consulta();
+            console.log(respuesta);
+            console.log(ok);
+            if(ok){
+            respuesta.forEach(({ title, body }) => {
+                seccion.innerHTML += `<h2>${title}</h2>
+                                        <p>${body}</p>`
+            });
+            }
+        }
+    </script>
+</body>
+
+</html>
