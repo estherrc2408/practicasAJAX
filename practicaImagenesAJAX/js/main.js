@@ -68,13 +68,14 @@ const consulta = async (search, select) => {
             })
         }
         if (select = 'square') {
+            console.log('select square');
             peticion = await fech(`${urlAPI}search?query=${search}`, {
                 method: 'GET',
                 headers: {
                     'authorization': 'G5Ojje39ZfUduWTOm2FOUUg9JYl9C18ode6hU4hB5IBEQv4Z2YOWJr1v'
                 },
             })
-        } else {
+        } else{
             peticion = await fech(`${urlAPI}search?query=${search}&orientation=${select}`, {
                 method: 'GET',
                 headers: {
@@ -83,6 +84,7 @@ const consulta = async (search, select) => {
             })
         }
         if (peticion.ok) {
+            console.log('todo ok');
             const respuesta = await peticion.json();
             return {
                 ok: true,
