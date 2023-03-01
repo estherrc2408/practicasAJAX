@@ -15,7 +15,7 @@ const arrayImgIndex = [
     { id: 'badger', url: 'https://nationaltoday.com/wp-content/uploads/2022/06/National-Badger-Day.jpg', alt: 'badger' },
 ]
 //url de la API
-const urlAPI = 'https://api.pexels.com/v1/'
+//const urlAPI = 'https://api.pexels.com/v1/'
 //contador para el numero de pagina
 let contador = 1;
 
@@ -60,28 +60,30 @@ const consulta = async (search, select) => {
         if (location.search) {
             select = null;
             search = location.search;
-            peticion = await fech(`${urlAPI}search?query=${search}`, {
+            peticion = await fetch(`https://api.pexels.com/v1/search?query=${search}`, {
                 method: 'GET',
                 headers: {
                     'authorization': 'G5Ojje39ZfUduWTOm2FOUUg9JYl9C18ode6hU4hB5IBEQv4Z2YOWJr1v'
                 },
             })
-        }
-        if (select = 'square') {
-            console.log('select square');
-            peticion = await fech(`${urlAPI}search?query=${search}`, {
-                method: 'GET',
-                headers: {
-                    'authorization': 'G5Ojje39ZfUduWTOm2FOUUg9JYl9C18ode6hU4hB5IBEQv4Z2YOWJr1v'
-                },
-            })
-        } else{
-            peticion = await fech(`${urlAPI}search?query=${search}&orientation=${select}`, {
-                method: 'GET',
-                headers: {
-                    'authorization': 'G5Ojje39ZfUduWTOm2FOUUg9JYl9C18ode6hU4hB5IBEQv4Z2YOWJr1v'
-                }
-            })
+        } else {
+            if (select = 'square') {
+                console.log('select square');
+                console.log(search);
+                peticion = await fetch(`https://api.pexels.com/v1/search?query=${search}`, {
+                    method: 'GET',
+                    headers: {
+                        'authorization': 'G5Ojje39ZfUduWTOm2FOUUg9JYl9C18ode6hU4hB5IBEQv4Z2YOWJr1v'
+                    },
+                })
+            } else {
+                peticion = await fetch(`https://api.pexels.com/v1/search?query=${search}&orientation=${select}`, {
+                    method: 'GET',
+                    headers: {
+                        'authorization': 'G5Ojje39ZfUduWTOm2FOUUg9JYl9C18ode6hU4hB5IBEQv4Z2YOWJr1v'
+                    }
+                })
+            }
         }
         if (peticion.ok) {
             console.log('todo ok');
@@ -93,11 +95,11 @@ const consulta = async (search, select) => {
         } else {
             throw {
                 ok: false,
-                msg: 'error en la peticion'
+                msg: 'error en la peticion a la API'
             }
         }
     } catch (error) {
-        console.log(error.msg);
+        console.log(error);
     }
 }
 
